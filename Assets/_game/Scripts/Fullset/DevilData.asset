@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35c1c79c75c2ba54285b5fe624f99298, type: 3}
+  m_Name: DevilData
+  m_EditorClassIdentifier: 
+  head: {fileID: 0}
+  tail: {fileID: 3585945836903917232, guid: 7ff8fe2fa7da9074386b481880ccd72b, type: 3}
+  wing: {fileID: 2983636399442423939, guid: d18908d4635218a41ae70a2939084643, type: 3}
+  leftHandObject: {fileID: 0}
+  mat: {fileID: 2100000, guid: 2f8b07ac81db57a41b8f6d6d2c27d5c2, type: 2}
