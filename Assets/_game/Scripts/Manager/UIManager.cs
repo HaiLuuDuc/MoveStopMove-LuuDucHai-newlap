@@ -11,10 +11,12 @@ public class UIManager : MonoBehaviour
     [Header("Alive:")]
     [SerializeField] private Text aliveText;
     [SerializeField] private GameObject aliveTextObj;
-    [Header("Panels:")]
+    [Header("WinLosePanels:")]
     [SerializeField] private GameObject losePanel;
     [SerializeField] private GameObject winPanel;
     public Text loseText;
+    public Text rankText;
+
     [Header("Coins:")]
     [SerializeField] private TextMeshProUGUI coinText;
     [SerializeField] private GameObject coin;
@@ -34,6 +36,10 @@ public class UIManager : MonoBehaviour
     [SerializeField] private InputField inputField;
     [Header("PlayerName:")]
     [SerializeField] private TextMeshProUGUI playerName;
+    [Header("Sound:")]
+    [SerializeField] private GameObject sound;
+    [Header("Revive:")]
+    [SerializeField] private GameObject revivePanel;
 
     //singleton
     public static UIManager instance;
@@ -48,6 +54,7 @@ public class UIManager : MonoBehaviour
         HideCanvasName();
         HideIndicators();
         HideAliveText();
+        UpdateUICoin();
     }
 
     private void Update()
@@ -68,12 +75,13 @@ public class UIManager : MonoBehaviour
         HideCoin();
         HideSettingsObj();
         HideSettingsPanel();
+        HideSound();
+        HideRevivePanel();
     }
     
     //joystick
     public void ShowJoystick()
     {
-        CloseAll();
         joystick.gameObject.SetActive(true);
         joystick.enabled = true;
     }
@@ -159,6 +167,7 @@ public class UIManager : MonoBehaviour
         aliveTextObj.SetActive(false);
     }
 
+    //coin
     public void ShowCoin()
     {
         coin.SetActive(true);
@@ -169,6 +178,7 @@ public class UIManager : MonoBehaviour
         coin.SetActive(false);
     }
 
+    //setting
     public void ShowSettingsObj()
     {
         settingsObj.SetActive(true);
@@ -189,6 +199,7 @@ public class UIManager : MonoBehaviour
         settingsPanel.SetActive(false);
     }
 
+    //input field
     public void SetPlayerNameFromInputField()
     {
         playerName.text = inputField.text;
@@ -206,6 +217,34 @@ public class UIManager : MonoBehaviour
     {
         DataManager.ins.playerData.playerNameString = playerName.text;
     }
+
+    public void SetRankText(int rank)
+    {
+        rankText.text = "#" + rank.ToString();
+    }
+
+    //sound icon
+    public void ShowSound()
+    {
+        sound.SetActive(true);
+    }
+
+    public void HideSound()
+    {
+        sound.SetActive(false);
+    }
+
+    //revive panel
+    public void ShowRevivePanel()
+    {
+        revivePanel.SetActive(true);
+    }
+
+    public void HideRevivePanel()
+    {
+        revivePanel.SetActive(false);
+    }
+
 
     //choose areas
     public void HideAllItemChooseAreas()

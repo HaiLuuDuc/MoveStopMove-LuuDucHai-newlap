@@ -89,6 +89,7 @@ MonoBehaviour:
   weaponData: {fileID: 11400000, guid: 8ad1d34286d136946b8465233e22fcd0, type: 2}
   child: {fileID: 1557203577510277837}
   meshRenderer: {fileID: 420911450423839138}
+  weaponType: 2
   currentMaterialIndex: 1
   isStuckAtObstacle: 0
   isPurchased: 1

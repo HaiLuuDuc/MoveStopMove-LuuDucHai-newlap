@@ -42,14 +42,22 @@ public class Player : Character
         isDead = true;
         SetSkinnedMeshRenderer(deathMaterial);
         DataManager.ins.playerData.currentBodyMat = deathMaterial;
-        LevelManager.instance.DeleteThisElementInEnemyLists(this);
-        LevelManager.instance.currentAlive--;
-        LevelManager.instance.characterList.Remove(this);
-        UIManager.instance.ShowLosePanel();
-        if (AudioManager.instance != null)
-        {
-            AudioManager.instance.Play(SoundType.Lose);
-        }   
+        UIManager.instance.SetRankText(LevelManager.instance.currentAlive);
+        BotManager.instance.DisableAllBots();
+        UIManager.instance.ShowRevivePanel();
+        UIManager.instance.HideJoystick();
+    }
+
+    public void OnRevive()
+    {
+        EnableCollider();
+        StopMoving();
+        //GetWeaponFromInventory();
+        characterAnim.ChangeAnim(Constant.IDLE);
+        SetSkinnedMeshRenderer(currentBodyMat);
+        DataManager.ins.playerData.currentBodyMat = currentBodyMat;
+        isDead = false;
+        isMoving = false;
     }
 
     public override void EnableCollider()
@@ -106,7 +114,7 @@ public class Player : Character
         if (other.CompareTag(Constant.WEAPON) && other.GetComponent<Weapon>().GetOwner() != this)
         {
             string enemyName = other.GetComponent<Weapon>().GetOwner().GetComponent<Bot>().botName.GetComponent<CanvasNameOnUI>().nameString;
-            UIManager.instance.loseText.text = Constant.YOU_WERE_KILLED_BY + enemyName;
+            UIManager.instance.loseText.text = Constant.YOU_VE_BEEN_KILLED_BY + enemyName;
             OnDeath();
         }
     }

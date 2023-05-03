@@ -2,24 +2,35 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.XR;
 
+
+[Serializable]
+public struct outlinesStruct
+{
+    public WeaponType weaponType;
+    public Outline[] outlines;
+
+}
 public class WeaponShopManager : MonoBehaviour
 {
     [Header("Display:")]
     [SerializeField] private Transform weaponHolder;
     [SerializeField] private Text weaponName;
     [SerializeField] private Text weaponCost;
+    public outlinesStruct[] dictOutline;
 
     [Header("Weapon:")]
     public Weapon[] weapons;
     public GameObject[] weaponMats;
 
     [Header("Indexs:")]
-    public int currentWeaponIndex = 0;
-    public int usingWeaponIndex = 0;
+    public int currentWeaponIndex;
+    public int usingWeaponIndex;
+
 
 
     public static WeaponShopManager Instance;
@@ -31,9 +42,8 @@ public class WeaponShopManager : MonoBehaviour
     public void Start()
     {
         InitWeaponMesh();
-        weapons[currentWeaponIndex].isPurchased = true;
         DisplayWeapon(currentWeaponIndex);
-        DisplayWeaponMat(currentWeaponIndex);
+        DisplayWeaponMats(currentWeaponIndex);
     }
 
     public void InitWeaponMesh()
@@ -87,7 +97,7 @@ public class WeaponShopManager : MonoBehaviour
         }
     }
 
-    public void DisplayWeaponMat(int index)
+    public void DisplayWeaponMats(int index)
     {
         weaponMats[index].gameObject.SetActive(true);
     }
@@ -102,7 +112,7 @@ public class WeaponShopManager : MonoBehaviour
             currentWeaponIndex= 0;
         }
         DisplayWeapon(currentWeaponIndex);
-        DisplayWeaponMat(currentWeaponIndex);
+        DisplayWeaponMats(currentWeaponIndex);
     }
 
     public void PreviousWeapon()
@@ -115,7 +125,7 @@ public class WeaponShopManager : MonoBehaviour
             currentWeaponIndex = weapons.Length - 1;
         }
         DisplayWeapon(currentWeaponIndex);
-        DisplayWeaponMat(currentWeaponIndex);
+        DisplayWeaponMats(currentWeaponIndex);
     }
 
     public void BuyWeapon()
@@ -127,27 +137,40 @@ public class WeaponShopManager : MonoBehaviour
             UIManager.instance.UpdateUICoin();
             weaponCost.text = Constant.USING;
             usingWeaponIndex = currentWeaponIndex;
+            DataManager.ins.playerData.usingWeaponIndex = usingWeaponIndex;
+            DataManager.ins.playerData.isPurchasedWeapon[currentWeaponIndex] = true;
         }
         else if (weapons[currentWeaponIndex].isPurchased == true)
         {
             weaponCost.text = Constant.USING;
             usingWeaponIndex = currentWeaponIndex;
+            DataManager.ins.playerData.usingWeaponIndex = usingWeaponIndex;
+            DataManager.ins.playerData.isPurchasedWeapon[currentWeaponIndex] = true;
         }
     }
 
-    public void ChooseMat1()
+    public void ChooseMat(int order)
     {
         Weapon wp = weapons[currentWeaponIndex];
-        wp.currentMaterialIndex = 0;
+        wp.currentMaterialIndex = order;
+        DataManager.ins.playerData.currentWeaponMaterialIndexs[currentWeaponIndex] = order;
         wp.ChangeMaterial(wp.currentMaterialIndex);
     }
 
-    public void ChooseMat2()
+    public void HideOutlinesWithSameWeaponType(WeaponType weaponType)
     {
-        Weapon wp = weapons[currentWeaponIndex];
-        wp.currentMaterialIndex = 1;
-        wp.ChangeMaterial(wp.currentMaterialIndex); 
+        for (int i = 0; i < dictOutline.Length; i++)
+        {
+            if (dictOutline[i].weaponType == weaponType)
+            {
+                for (int j = 0; j < dictOutline[i].outlines.Length; j++)
+                {
+                    dictOutline[i].outlines[j].gameObject.SetActive(false);
+                }
+            }
+        }
     }
+
 
     public GameObject GetWeapon()
     {

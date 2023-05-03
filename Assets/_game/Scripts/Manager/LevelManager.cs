@@ -11,7 +11,8 @@ public class LevelManager : MonoBehaviour
     [Header("Player:")]
     [SerializeField] private Player player;
 
-    
+    [Header("targetCircle")]
+    [SerializeField] private TargetCircle targetCircle;
 
     [Header("Lists:")]
     public List<Character> characterList = new List<Character>();
@@ -23,10 +24,16 @@ public class LevelManager : MonoBehaviour
     [Header("Bool Variables:")]
     public bool isGaming;
     public bool isWin;
+    public bool isPause;
 
-    [Header("NavMesh:")]
+    [Header("Maps:")]
+    [SerializeField] private Transform mapParent;
+    public GameObject[] mapPrefabs;
+    private GameObject currentMap;
+    [Header("NavMeshDatas:")]
     public NavMeshData[] navMeshDatas;
-    private int currentNavMeshIndex = 0;
+    private NavMeshData currentNavMeshData;
+    public int currentLevelIndex = 0;
 
     //singleton
     public static LevelManager instance;
@@ -41,8 +48,10 @@ public class LevelManager : MonoBehaviour
         currentAlive = initialAlive;
         isGaming = false;
         isWin = false;
-        DisnableALlCharacters();
-        UIManager.instance.UpdateUICoin();
+        BotManager.instance.DisableAllBots();
+        currentLevelIndex = 2;
+        SpawnMap(currentLevelIndex);
+        SpawnNav(currentLevelIndex);
     }
 
     private void Update()
@@ -53,7 +62,17 @@ public class LevelManager : MonoBehaviour
             player.Dance();
             isGaming = false;
             isWin = true;
+            currentLevelIndex++;
+            DataManager.ins.playerData.currentLevelIndex = this.currentLevelIndex;
             AudioManager.instance.Play(SoundType.Win);
+        }
+        if(Input.GetKeyDown(KeyCode.C))
+        {
+            BotManager.instance.DisableAllBots();
+        }
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            BotManager.instance.EnableAllBots();
         }
     }
 
@@ -110,29 +129,42 @@ public class LevelManager : MonoBehaviour
         UIManager.instance.ShowAliveText();
         UIManager.instance.ShowSettingsObj();
         UIManager.instance.HideCoin();
-        EnableALlCharacters();
+        UIManager.instance.HideSound();
+        BotManager.instance.EnableAllBots();
         UIManager.instance.SetPlayerNameFromInputField();
         currentAlive = initialAlive;
         isGaming = true;
     }
 
-    public void EnableALlCharacters()
+    public void ResetTargetCircle()
     {
-        for(int i = 0; i < BotManager.instance.botList.Count; i++)
-        {
-            BotManager.instance.botList[i].ChangeState(new PatrolState());
-        }
-        isGaming = true;
+        targetCircle.Deactive();
     }
 
-    public void DisnableALlCharacters()
+    public void SpawnMap(int index)
     {
-        for (int i = 0; i < BotManager.instance.botList.Count; i++)
+        if(currentMap== mapPrefabs[index])
         {
-            BotManager.instance.botList[i].ChangeState(new IdleState());
+            return;
         }
-        isGaming = false;
+        Destroy(currentMap);
+        currentMap = Instantiate(mapPrefabs[index]);
+        currentMap.transform.SetParent(mapParent.transform);
+        currentMap.transform.localPosition = Vector3.zero;
+        currentMap.transform.localRotation = Quaternion.Euler(Vector3.zero);
     }
+
+    public void SpawnNav(int index)
+    {
+        if (currentNavMeshData == navMeshDatas[index])
+        {
+            return;
+        }
+        NavMesh.RemoveAllNavMeshData();
+        NavMesh.AddNavMeshData(navMeshDatas[index]);
+        currentNavMeshData = navMeshDatas[index];
+    }
+
 
 
 

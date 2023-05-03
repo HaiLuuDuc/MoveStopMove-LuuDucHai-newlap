@@ -7,7 +7,7 @@ public class PlayerMovement : MonoBehaviour
 {
     [Header("Joystick:")]
     [SerializeField] private Joystick joystick;
-    
+
     [Header("Animation:")]
     [SerializeField] private CharacterAnimation characterAnimation;
 
@@ -15,7 +15,7 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 firstMousePosition;
     private Vector3 currentMousePosition;
     private Vector3 direction;
-    
+
     [Header("Player Properties:")]
     [SerializeField] private Player player;
     [SerializeField] private float speed;
@@ -24,7 +24,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        if (LevelManager.instance.isGaming == false)
+        if (LevelManager.instance.isGaming == false || LevelManager.instance.isPause==true)
         {
             return;
         }

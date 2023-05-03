@@ -5,6 +5,7 @@ using System;
 using Unity.VisualScripting;
 using UnityEngine.UIElements;
 using UnityEngine.UI;
+using JetBrains.Annotations;
 
 [Serializable]
 public struct IsPurchasedItems
@@ -49,6 +50,12 @@ public class DataManager : MonoBehaviour
         LoadIsPurchasedItems();
         LoadItemsOnPlayerBody();
         LoadPlayerNameAndInputField();
+        LoadWeaponIndex();
+        LoadIsPurchasedWeapon();
+        LoadMute();
+        LoadWeaponMaterialIndex();
+        LoadWeaponMaterialOutline();
+        LoadCurrentLevelIndex();
 
              // sau khi hoàn thành tất cả các bước load data ở trên
              isLoaded = true;
@@ -77,10 +84,56 @@ public class DataManager : MonoBehaviour
 
     public void LoadPlayerNameAndInputField()
     {
-        UIManager.instance.SetPlayerNameAndInputField(playerData.playerNameString);
+        UIManager.instance.SetPlayerNameAndInputField(this.playerData.playerNameString);
     }
 
-   
+    public void LoadWeaponIndex()
+    {
+        WeaponShopManager.Instance.usingWeaponIndex = this.playerData.usingWeaponIndex;
+        WeaponShopManager.Instance.currentWeaponIndex = 0;
+        
+        for (int i = 0; i < WeaponShopManager.Instance.weapons.Length; i++)
+        {
+            Weapon wp = WeaponShopManager.Instance.weapons[i];
+            wp.currentMaterialIndex = playerData.currentWeaponMaterialIndexs[i];
+        }
+    }
+
+    public void LoadIsPurchasedWeapon()
+    {
+        for(int i = 0; i < WeaponShopManager.Instance.weapons.Length; i++)
+        {
+            WeaponShopManager.Instance.weapons[i].isPurchased = this.playerData.isPurchasedWeapon[i];
+        }
+    }
+
+    public void LoadMute()
+    {
+        AudioManager.instance.isMute = this.playerData.isMute;
+    }
+
+    public void LoadWeaponMaterialIndex()
+    {
+        for(int i = 0; i < WeaponShopManager.Instance.weapons.Length; i++)
+        {
+            WeaponShopManager.Instance.weapons[i].currentMaterialIndex = this.playerData.currentWeaponMaterialIndexs[i];
+        }
+    }
+
+    public void LoadWeaponMaterialOutline()
+    {
+        for(int i = 0; i < WeaponShopManager.Instance.dictOutline.Length; i++)
+        {
+            WeaponShopManager.Instance.HideOutlinesWithSameWeaponType((WeaponType)i);
+            WeaponShopManager.Instance.dictOutline[i].outlines[playerData.currentWeaponMaterialIndexs[i]].gameObject.SetActive(true);
+        }
+    }
+
+    public void LoadCurrentLevelIndex()
+    {
+        LevelManager.instance.currentLevelIndex = this.playerData.currentLevelIndex;
+    }
+
 }
 
 
@@ -99,11 +152,17 @@ public class PlayerData
     [Header("--------- Game Params ---------")]
     public bool isSetUp = false;
     public int level = 0;
-    public int coin = 900;
+    public int coin = 500;
     public int[] usingItemIndexs = new int[10];
     public IsPurchasedItems[] dict = new IsPurchasedItems[4];
     public Material currentBodyMat;
     public string playerNameString;
+    public int usingWeaponIndex = 0;
+    public int[] currentWeaponMaterialIndexs = new int[3];
+    public bool[] isPurchasedWeapon = new bool[3];
+    public bool isMute = false;
+    public int currentLevelIndex = 0;
+    
 
     public PlayerData()
     {
@@ -111,11 +170,19 @@ public class PlayerData
         {
             goto Label;
         }
+        //setup usingItemIndexs:
         for(int i=0;i<usingItemIndexs.Length;i++)
         {
             usingItemIndexs[i] = -1;
         }
+        //set up dict:
         SetUpDict();
+        //set up isPurchasedWeapon:
+        for(int i = 0; i < isPurchasedWeapon.Length; i++)
+        {
+            isPurchasedWeapon[i] = false;
+        }
+        isPurchasedWeapon[Constant.FIRST_INDEX] = true;
         isSetUp = true;
     Label:;
     }

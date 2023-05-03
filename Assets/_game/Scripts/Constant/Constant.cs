@@ -5,7 +5,7 @@ using UnityEngine;
 public class Constant : MonoBehaviour
 {
     public static int FIRST_INDEX = 0;
-    public static float SCALE_VALUE = 1.05f;
+    public static float SCALE_VALUE = 1.06f;
 
     public const string RUN = "run";
     public const string IDLE = "idle";
@@ -26,6 +26,6 @@ public class Constant : MonoBehaviour
     public const string OBSTACLE = "obstacle";
     public const string CENTER_OF_MAP = "centerofmap";
     public const string WEAPON_CLONES = "weaponclones";
-    public const string YOU_WERE_KILLED_BY = "You were killed by ";
+    public const string YOU_VE_BEEN_KILLED_BY = "You've been killed by ";
 
 }

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Weapon : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class Weapon : MonoBehaviour
     public WeaponData weaponData;
     public Transform child;
     public MeshRenderer meshRenderer;
+    public WeaponType weaponType;
     [Header("Manage:")]
     protected WeaponPool weaponPool;
     protected Character owner;
@@ -20,7 +22,8 @@ public class Weapon : MonoBehaviour
 
     protected void Start()
     {
-        currentMaterialIndex = 0;
+        currentMaterialIndex = DataManager.ins.playerData.currentWeaponMaterialIndexs[(int)weaponType];
+        ChangeMaterial(currentMaterialIndex);
         isStuckAtObstacle = false;
     }
 

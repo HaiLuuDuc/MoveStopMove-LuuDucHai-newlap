@@ -145,4 +145,28 @@ public class BotManager : MonoBehaviour
             bot.isHaveWeapon = true;
         }
     }
+
+    public void EnableAllBots()
+    {
+        for (int i = 0; i < botList.Count; i++)
+        {
+            if (botList[i].isDead == false)
+            {
+                botList[i].ChangeState(new PatrolState());
+            }
+        }
+        LevelManager.instance.isGaming = true;
+    }
+
+    public void DisableAllBots()
+    {
+        for (int i = 0; i < botList.Count; i++)
+        {
+            if (botList[i].isDead == false)
+            {
+                botList[i].ChangeState(new IdleState());
+            }
+        }
+        LevelManager.instance.isGaming = false;
+    }
 }

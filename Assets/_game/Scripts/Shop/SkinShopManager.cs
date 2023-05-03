@@ -34,11 +34,13 @@ public class SkinShopManager : MonoBehaviour
 
     public void OnOpenSkinShop()
     {
+        //khi mở shop thì luôn hiển thị tab hat
         tabButtons[(int)ItemType.Hat].RunOnClick();
     }
 
     public void OnCloseSkinShop()
     {
+        // đóng shop thì player lên đồ
         player.PutOnItems();
     }
 
@@ -46,22 +48,26 @@ public class SkinShopManager : MonoBehaviour
     {
         ItemController ic = itemControllers[(int)type];
         Item item = ic.items[ic.currentIndex];
+        //nếu chưa mua và đủ tiền mua
         if (item.isPurchased == false && DataManager.ins.playerData.coin >= item.cost)
         {
-            item.isPurchased = true;
-            DataManager.ins.playerData.coin -= item.cost;
-            UIManager.instance.UpdateUICoin();
-            ic.UpdateBuyButton(Constant.USING);
-            ic.usingIndex = ic.currentIndex;
-            UnlockSkin(item);
+            item.isPurchased = true;// đánh dấu là đã mua
+            DataManager.ins.playerData.coin -= item.cost;//trừ tiền của người chơi
+            UIManager.instance.UpdateUICoin();//update coin hiển thị
+            ic.UpdateBuyButton(Constant.USING);//button thay đổi từ số tiền sang USING
+            ic.usingIndex = ic.currentIndex;//đánh dấu item này đang được sử dụng
+            UnlockSkin(item);//tắt UI khóa
         }
+        //nếu đã mua 
         else if (item.isPurchased == true)
         {
+            //nếu đang không sử dụng item này thì USE -> USING
             if (ic.usingIndex != ic.currentIndex)
             {
                 ic.UpdateBuyButton(Constant.USING);
                 ic.usingIndex = ic.currentIndex;
             }
+            //nếu đang sử dụng item này thì USING -> USE
             else
             {
                 ic.UpdateBuyButton(Constant.USE);
@@ -70,6 +76,7 @@ public class SkinShopManager : MonoBehaviour
             UnlockSkin(item);
         }
 
+        //đánh dấu item này isPurchased = true trong Data
         if (ic.usingIndex >= 0) {
             SaveIsPurchasedItem(ic.itemType, ic.usingIndex);
         }
@@ -113,6 +120,7 @@ public class SkinShopManager : MonoBehaviour
     public void SaveUsingItemIndex(ItemType type)
     {
         ItemController ic = null;
+        //get itemController
         for (int i = 0; i < itemControllers.Length; i++)
         {
             if (itemControllers[i].itemType == type)
@@ -122,7 +130,7 @@ public class SkinShopManager : MonoBehaviour
         }
         if (ic != null)
         {
-            DataManager.ins.playerData.usingItemIndexs[(int)ic.itemType] = ic.usingIndex;//dong nay lap lai moi lan Load
+            DataManager.ins.playerData.usingItemIndexs[(int)ic.itemType] = ic.usingIndex;
         }
     }
 

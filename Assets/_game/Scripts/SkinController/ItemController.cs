@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -14,8 +14,6 @@ public abstract class ItemController : MonoBehaviour
     public Button[] buttons;
     [Header("Items Array:")]
     public Item[] items;
-    [Header("Outline:")]
-    public Outline[] outlines;
     [Header("Indexs:")]
     public int currentIndex = 0;
     public int usingIndex = -1;
@@ -27,6 +25,15 @@ public abstract class ItemController : MonoBehaviour
     {
         AddEventToAllItems();
         items[Constant.FIRST_INDEX].DisplayOutline(); 
+    }
+
+    public void AddEventToAllItems()
+    {
+        for (int i = 0; i < buttons.Length; i++)
+        {
+            int localIndex = i;
+            buttons[i].onClick.AddListener(() => OnButtonClick(localIndex));
+        }
     }
 
     protected virtual void UnDisplayAllOutlines()
@@ -41,16 +48,19 @@ public abstract class ItemController : MonoBehaviour
     public virtual void OnButtonClick(int index)
     {
         Item item = items[index];
+        // nếu item đang được chọn chưa mua thì button sẽ hiển thị giá tiền
         if (item.isPurchased == false)
         {
             UpdateBuyButton(item.cost.ToString());
         }
         else
         {
+            // nếu item đang được chọn mua rồi và item đang được chọn chính là item đang sử dụng thì button sẽ hiển thị USING
             if (usingIndex == index)
             {
                 UpdateBuyButton(Constant.USING);
             }
+            // nếu item đang được chọn mua rồi và item đang được chọn không phải item đang sử dụng thì button sẽ hiển thị USE
             else
             {
                 UpdateBuyButton(Constant.USE);
@@ -66,15 +76,6 @@ public abstract class ItemController : MonoBehaviour
     public void UpdateBuyButton(string str)
     {
         buyButtonText.text = str;
-    }
-
-    public void AddEventToAllItems()
-    {
-        for (int i = 0; i < buttons.Length; i++)
-        {
-            int localIndex = i;
-            buttons[i].onClick.AddListener(() => OnButtonClick(localIndex));
-        }
     }
 
     public void LoadIsPurchasedData() 

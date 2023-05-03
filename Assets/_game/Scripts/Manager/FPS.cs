@@ -13,7 +13,7 @@ public class FPS : MonoBehaviour
     private void Start()
     {
         StartCoroutine(ShowFPS(delayTime));
-        Application.targetFrameRate = 100;
+        Application.targetFrameRate = 60;
     }
 
     void Update()
