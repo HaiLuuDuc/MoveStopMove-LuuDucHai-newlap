@@ -39,13 +39,13 @@ public class Player : Character
     public override void OnDeath() {
         DisableCollider();
         characterAnim.ChangeAnim(Constant.DIE);
-        isDead = true;
         SetSkinnedMeshRenderer(deathMaterial);
         DataManager.ins.playerData.currentBodyMat = deathMaterial;
         UIManager.instance.SetRankText(LevelManager.instance.currentAlive);
         BotManager.instance.DisableAllBots();
         UIManager.instance.ShowRevivePanel();
         UIManager.instance.HideJoystick();
+        isDead = true;
     }
 
     public void OnRevive()

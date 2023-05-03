@@ -49,7 +49,6 @@ public class LevelManager : MonoBehaviour
         isGaming = false;
         isWin = false;
         BotManager.instance.DisableAllBots();
-        currentLevelIndex = 2;
         SpawnMap(currentLevelIndex);
         SpawnNav(currentLevelIndex);
     }
@@ -65,14 +64,6 @@ public class LevelManager : MonoBehaviour
             currentLevelIndex++;
             DataManager.ins.playerData.currentLevelIndex = this.currentLevelIndex;
             AudioManager.instance.Play(SoundType.Win);
-        }
-        if(Input.GetKeyDown(KeyCode.C))
-        {
-            BotManager.instance.DisableAllBots();
-        }
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            BotManager.instance.EnableAllBots();
         }
     }
 

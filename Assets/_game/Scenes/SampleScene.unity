@@ -122,7 +122,7 @@ NavMeshSettings:
     preserveTilesOutsideBounds: 0
     debug:
       m_Flags: 0
-  m_NavMeshData: {fileID: 23800000, guid: 9e78811bed46a7244bf72da9e4896851, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: a9fc76b10b2f1224cbf3bf4aecc47ff3, type: 2}
 --- !u!1001 &17639509
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5658,7 +5658,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.05, y: 0.26}
+  m_AnchoredPosition: {x: 0.05, y: 0.15}
   m_SizeDelta: {x: 33.07, y: 373.2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!212 &487682984
@@ -5733,6 +5733,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterTransform: {fileID: 1822128199}
+  offset: {x: 0, y: 0.15, z: 0}
 --- !u!1 &494935191
 GameObject:
   m_ObjectHideFlags: 0
@@ -20800,12 +20801,10 @@ MonoBehaviour:
   mapParent: {fileID: 1576064357}
   mapPrefabs:
   - {fileID: 4797361182953712089, guid: 65dac4b964ea18b4fbde161f1915201b, type: 3}
-  - {fileID: 1441024842402732852, guid: 063adb2a4b953064fbb2083b6955bfe3, type: 3}
-  - {fileID: 3834665348419178252, guid: bf94dd6cda9552c4db78cd46b64ef0ef, type: 3}
+  - {fileID: 6888496128983152945, guid: f410dac56b805244fbbe082962f01b92, type: 3}
   navMeshDatas:
   - {fileID: 23800000, guid: 0b672b99d39106d4c9b0525db21c4c22, type: 2}
-  - {fileID: 23800000, guid: 5a8e83b1615119c429000afaa6397a7e, type: 2}
-  - {fileID: 23800000, guid: 9e78811bed46a7244bf72da9e4896851, type: 2}
+  - {fileID: 23800000, guid: a9fc76b10b2f1224cbf3bf4aecc47ff3, type: 2}
   currentLevelIndex: 0
 --- !u!1 &1868195115
 GameObject:
