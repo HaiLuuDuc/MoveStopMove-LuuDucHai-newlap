@@ -10,11 +10,11 @@ public class ButtonHome : BaseButton
         LevelManager.instance.DeleteCharacters();
         LevelManager.instance.RespawnCharacters();
         LevelManager.instance.ResetTargetCircle();
+        LevelManager.instance.SpawnMap(LevelManager.instance.currentLevelIndex);
+        LevelManager.instance.SpawnNav(LevelManager.instance.currentLevelIndex);
         LevelManager.instance.isGaming = false;
         LevelManager.instance.isPause = false;
         LevelManager.instance.isWin = false;
-        LevelManager.instance.SpawnMap(LevelManager.instance.currentLevelIndex);
-        LevelManager.instance.SpawnNav(LevelManager.instance.currentLevelIndex);
         BotManager.instance.DisableAllBots();
         UIManager.instance.ShowCoin();
         UIManager.instance.ShowSound();

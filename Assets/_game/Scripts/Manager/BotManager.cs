@@ -34,11 +34,11 @@ public class BotManager : MonoBehaviour
     {
         for(int i = 0; i < botSize; i++)
         {
-            SpawnBot();
+            Spawn();
         }
     }
 
-    public void SpawnBot()
+    public void Spawn()
     {
         Bot pooledBot = botPool.GetObject().GetComponent<Bot>();
         SetPosAndRotFarAwayFromOthers(pooledBot);
@@ -61,7 +61,7 @@ public class BotManager : MonoBehaviour
         }
     }
 
-    public void DespawnBot(Bot bot)
+    public void Despawn(Bot bot)
     {
         //Debug.Log("despawn bot");
         bot.DeActiveNavmeshAgent();
@@ -80,12 +80,12 @@ public class BotManager : MonoBehaviour
             int randomX = (int)Random.Range(topLeftCorner.position.x, bottomRightCorner.position.x);
             int randomZ = (int)Random.Range(bottomRightCorner.position.z, topLeftCorner.position.z);
             spawnPosition = new Vector3(randomX, initialY, randomZ);
-        } while (CheckPosition(spawnPosition) == false); //spawn position cho bot sao cho nó không đứng gần các thằng khác
+        } while (CheckPositionFarAwayFromOthers(spawnPosition) == false); //spawn position cho bot sao cho nó không đứng gần các thằng khác
         bot.transform.position = spawnPosition;
         bot.transform.rotation = Quaternion.Euler(spawnRotation);
     }
     
-    public bool CheckPosition(Vector3 pos)
+    public bool CheckPositionFarAwayFromOthers(Vector3 pos)
     {
         for(int i = 0; i < LevelManager.instance.characterList.Count; i++)
         {

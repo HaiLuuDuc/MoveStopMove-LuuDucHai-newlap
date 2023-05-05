@@ -31,7 +31,7 @@ public class BotNamePool : MonoBehaviour
     {
         foreach (GameObject obj in pool)
         {
-            if (!obj.activeInHierarchy)
+            if (!obj.activeSelf)
             {
                 obj.SetActive(true);
                 return obj;

@@ -28,10 +28,10 @@ public class DieState : IState
         }
         else
         {
-            BotManager.instance.DespawnBot(bot);
+            BotManager.instance.Despawn(bot);
             if (tempAlive > BotManager.instance.botSize)
             {
-                BotManager.instance.SpawnBot();
+                BotManager.instance.Spawn();
             }
         }
     }

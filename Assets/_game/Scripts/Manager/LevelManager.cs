@@ -62,6 +62,10 @@ public class LevelManager : MonoBehaviour
             isGaming = false;
             isWin = true;
             currentLevelIndex++;
+            if(currentLevelIndex >= navMeshDatas.Length)
+            {
+                currentLevelIndex = 0;
+            }
             DataManager.ins.playerData.currentLevelIndex = this.currentLevelIndex;
             AudioManager.instance.Play(SoundType.Win);
         }
@@ -84,7 +88,7 @@ public class LevelManager : MonoBehaviour
                 }
             }
             // despawn bot
-            BotManager.instance.DespawnBot(characterList[Constant.FIRST_INDEX] as Bot);
+            BotManager.instance.Despawn(characterList[Constant.FIRST_INDEX] as Bot);
         }
         characterList.Clear();
     }
@@ -95,7 +99,7 @@ public class LevelManager : MonoBehaviour
         player.OnInit();
         for (int i = 0; i < BotManager.instance.botList.Count; i++)
         {
-            BotManager.instance.SpawnBot();
+            BotManager.instance.Spawn();
         }
     }
 
@@ -114,6 +118,7 @@ public class LevelManager : MonoBehaviour
     {
         /*DeleteCharacters();
         RespawnCharacters();*/
+        BotManager.instance.EnableAllBots();
         UIManager.instance.ShowJoystick();  
         UIManager.instance.ShowIndicators();
         UIManager.instance.ShowCanvasName();
@@ -121,7 +126,6 @@ public class LevelManager : MonoBehaviour
         UIManager.instance.ShowSettingsObj();
         UIManager.instance.HideCoin();
         UIManager.instance.HideSound();
-        BotManager.instance.EnableAllBots();
         UIManager.instance.SetPlayerNameFromInputField();
         currentAlive = initialAlive;
         isGaming = true;
